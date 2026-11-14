@@ -32,7 +32,10 @@ export default function AccountCard() {
         <div className="account-row" key={a.label}>
           <div className="account-info">
             <span className="account-label">{a.label}</span>
-            <span className="account-number">{a.number}</span>
+            <span className="account-number">
+              {a.icon && <img className="account-icon" src={a.icon} alt="" />}
+              {a.number}
+            </span>
             <span className="account-detail">{a.detail}</span>
           </div>
           <button

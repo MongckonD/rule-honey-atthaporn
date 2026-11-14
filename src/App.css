@@ -292,3 +292,7 @@ body { margin: 0; }
 .app .save-qr-btn:active { transform: translateY(2px); }
 .app .save-qr-btn:disabled { opacity: .7; cursor: progress; }
 .app .save-qr-btn.done { background: #4cbf74; box-shadow: 0 0 0 2.5px #4cbf74, 0 4px 0 #2f9a55; }
+
+/* ไอคอนหน้าเลขบัญชี */
+.app .account-number { display: flex; align-items: center; gap: 8px; }
+.app .account-icon { flex: none; width: 1.6em; height: 1.6em; object-fit: contain; }
