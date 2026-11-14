@@ -7,18 +7,20 @@ import BlackCard from "./components/BlackCard";
 import KaengCard from "./components/KaengCard";
 import FootballCard from "./components/FootballCard";
 import OddsCard from "./components/OddsCard";
+import AccountCard from "./components/AccountCard";
+import QrBox from "./components/QrBox";
 
-type Page = "fees" | "check" | "rules" | "black" | "kaeng" | "football" | "odds";
+type Page = "home" | "fees" | "check" | "rules" | "black" | "kaeng" | "football" | "odds";
 
-const PAGES: { id: Page; label: string }[] = [
-  { id: "fees", label: "1 · ค่าธรรมเนียม" },
-  { id: "check", label: "2 · เช็คไฟล์NAM" },
-  { id: "rules", label: "3 · กฎกลาง" },
-  { id: "black", label: "4 · กฎดำ" },
-  { id: "kaeng", label: "5 · กฎแคง" },
-  { id: "football", label: "6 · กฎเดิมบอล" },
-  { id: "odds", label: "7 · กฎอัตราต่อรอง" },
-];
+const LABEL: Record<Exclude<Page, "home">, string> = {
+  fees: "QR code + ค่าธรรมเนียม",
+  check: "เช็คไฟล์ NAM",
+  rules: "กฎกลางเพิ่มเติม",
+  black: "กฎดำ",
+  kaeng: "กฎแคง",
+  football: "กฎเดิมบอล",
+  odds: "กฎอัตราต่อรอง",
+};
 
 const SUBTITLE: Partial<Record<Page, string>> = {
   fees: "ค่าธรรมเนียมและกฎการโอน",
@@ -26,10 +28,45 @@ const SUBTITLE: Partial<Record<Page, string>> = {
   rules: "ข้อ 1-21 คือ กฎกลาง Nam autthaporn เสียงของกลางถือเป็นที่สิ้นสุด",
 };
 
+const PAGE_IDS = Object.keys(LABEL) as Page[];
+
 const fromHash = (): Page => {
   const h = location.hash.replace("#", "");
-  return PAGES.some((p) => p.id === h) ? (h as Page) : "fees";
+  return PAGE_IDS.includes(h as Page) ? (h as Page) : "home";
 };
+
+function Tile({ id, tone, children }: {
+  id: Exclude<Page, "home">;
+  tone: "pink" | "blue";
+  children?: React.ReactNode;
+}) {
+  return (
+    <a className={`tile tile-${tone} tile-${id}`} href={`#${id}`}>
+      {children}
+      <span className="tile-label">{LABEL[id]}</span>
+      <span className="tile-more" aria-hidden>ดูกฎ →</span>
+    </a>
+  );
+}
+
+function Home() {
+  return (
+    <>
+      <AccountCard />
+      <div className="tile-grid">
+        <Tile id="fees" tone="pink">
+          <QrBox small />
+        </Tile>
+        <Tile id="black" tone="blue" />
+        <Tile id="kaeng" tone="pink" />
+        <Tile id="rules" tone="blue" />
+        <Tile id="football" tone="blue" />
+        <Tile id="check" tone="pink" />
+        <Tile id="odds" tone="pink" />
+      </div>
+    </>
+  );
+}
 
 export default function App() {
   const [page, setPage] = useState<Page>(fromHash);
@@ -43,47 +80,46 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
-  const go = (p: Page) => {
-    location.hash = p;
-  };
-
-  const next = PAGES[(PAGES.findIndex((p) => p.id === page) + 1) % PAGES.length];
-  const tone = PAGES.findIndex((p) => p.id === page) % 2 === 1 ? "tone-blue" : "";
+  const tone = ["check", "black", "football"].includes(page) ? "tone-blue" : "";
 
   return (
     <div className="app">
       <header className="hero">
-        <div className="script" aria-hidden>Namphueng</div>
-        <h1><span className="heart">♥</span> เกณฑ์การตัดสินน้ำผึ้ง <span className="heart">♥</span></h1>
+        <div className="script">Namphueng</div>
+        <h1 className="tagline">
+          <span className="tagline-lead">รับกลางเดิมพัน</span>
+          <span className="tagline-list">ฟีฟาย-แคง-บอล-เปส-มวย-ถือเงิน</span>
+        </h1>
         {SUBTITLE[page] && <p className="sub">{SUBTITLE[page]}</p>}
       </header>
 
-      <nav className="pager" aria-label="เลือกหน้า">
-        {PAGES.map((p) => (
-          <button
-            key={p.id}
-            className={p.id === page ? "active" : ""}
-            aria-current={p.id === page ? "page" : undefined}
-            onClick={() => go(p.id)}
-          >
-            {p.label}
-          </button>
-        ))}
-      </nav>
-
       <main className={tone}>
-        {page === "fees" && <FeeCard />}
-        {page === "check" && <CheckCard />}
-        {page === "black" && <BlackCard />}
-        {page === "kaeng" && <KaengCard />}
-        {page === "football" && <FootballCard />}
-        {page === "odds" && <OddsCard />}
-        {page === "rules" &&
-          RULES.map((rule) => <RuleCard key={rule.no} rule={rule} />)}
+        {page === "home" ? (
+          <Home />
+        ) : (
+          <>
+            <a className="back-link" href="#">← กลับหน้าหลัก</a>
+            <h2 className="page-title">{LABEL[page]}</h2>
 
-        <button className="next-page" onClick={() => go(next.id)}>
-          ไปหน้า {next.label} →
-        </button>
+            {page === "fees" && (
+              <>
+                <section className="card qr-card">
+                  <QrBox />
+                </section>
+                <FeeCard />
+              </>
+            )}
+            {page === "check" && <CheckCard />}
+            {page === "black" && <BlackCard />}
+            {page === "kaeng" && <KaengCard />}
+            {page === "football" && <FootballCard />}
+            {page === "odds" && <OddsCard />}
+            {page === "rules" &&
+              RULES.map((rule) => <RuleCard key={rule.no} rule={rule} />)}
+
+            <a className="next-page" href="#">← กลับหน้าหลัก</a>
+          </>
+        )}
 
         <footer>🎀 เสียงของกลางถือเป็นที่สิ้นสุด 🎀</footer>
       </main>

@@ -158,3 +158,137 @@ body { margin: 0; }
 .app main.tone-blue .card:nth-of-type(even) {
   --c: var(--pink); --c-d: var(--pink-d); --c-soft: var(--soft); --c-bg: #fff8fb;
 }
+/* ===== หน้าหลัก: บัญชี ===== */
+.app .account-card {
+  position: relative; background: #fff;
+  border: 3px solid var(--pink-d); border-radius: 28px;
+  padding: 16px 18px 8px; margin: 6px 0 26px;
+  box-shadow: 0 0 0 6px var(--soft), 0 10px 24px rgba(236, 95, 155, .18);
+}
+.app .account-note {
+  margin: 0 0 6px; padding: 4px 14px; text-align: center;
+  font-size: .9rem; font-weight: 600; line-height: 1.5;
+  color: #d23b6f; background: #fff0f5; border-radius: 999px;
+}
+.app .account-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 2px;
+}
+.app .account-row + .account-row { border-top: 2px dashed var(--line); }
+.app .account-info { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.45; }
+.app .account-label { font-size: .85rem; font-weight: 600; color: var(--mut); }
+.app .account-number {
+  font-size: 1.45rem; font-weight: 700; color: var(--ink);
+  letter-spacing: .04em; font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.app .account-detail { font-size: .85rem; font-weight: 600; color: var(--ink); }
+.app .copy-btn {
+  flex: none; min-width: 96px; height: 44px; padding: 0 16px;
+  font: inherit; font-size: .95rem; font-weight: 700; cursor: pointer;
+  color: #fff; background: var(--pink);
+  border: 2.5px solid var(--pink-d); border-radius: 999px;
+  box-shadow: 0 3px 0 var(--pink-d);
+  transition: transform .08s, background .15s;
+}
+.app .copy-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--pink-d); }
+.app .account-row:nth-of-type(odd) .copy-btn { background: var(--blue); border-color: var(--blue-d); box-shadow: 0 3px 0 var(--blue-d); }
+.app .copy-btn.done,
+.app .account-row:nth-of-type(odd) .copy-btn.done { background: #4cbf74; border-color: #2f9a55; box-shadow: 0 3px 0 #2f9a55; }
+
+/* ===== หน้าหลัก: ปุ่มหัวข้อ ===== */
+.app .tile-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  grid-auto-rows: minmax(96px, auto); gap: 14px;
+}
+.app .tile-fees     { grid-column: 1; grid-row: 1 / span 2; }
+.app .tile-rules    { grid-column: 1; grid-row: 3; }
+.app .tile-check    { grid-column: 1; grid-row: 4; }
+.app .tile-black    { grid-column: 2; grid-row: 1; }
+.app .tile-kaeng    { grid-column: 2; grid-row: 2; }
+.app .tile-football { grid-column: 2; grid-row: 3; }
+.app .tile-odds     { grid-column: 2; grid-row: 4; }
+
+.app .tile {
+  --c: var(--pink); --c-d: var(--pink-d); --c-soft: var(--soft); --c-bg: #fff8fb;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; padding: 14px 10px; text-align: center; text-decoration: none;
+  background: var(--c-bg); color: var(--c-d);
+  border: 2.5px solid var(--c); border-radius: 24px;
+  box-shadow: 0 5px 0 var(--c-soft);
+  transition: transform .1s, box-shadow .1s;
+}
+.app .tile-blue { --c: var(--blue); --c-d: var(--blue-d); --c-soft: #d4e5fb; --c-bg: #f5f9ff; }
+.app .tile:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--c-soft); }
+.app .tile:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--c-soft); }
+.app .tile:focus-visible { outline: 3px solid var(--c-d); outline-offset: 2px; }
+.app .tile-icon { font-size: 1.6rem; line-height: 1.2; }
+.app .tile-label { font-size: 1.05rem; font-weight: 700; line-height: 1.35; }
+.app .tile-more { font-size: .78rem; font-weight: 600; opacity: .7; }
+
+/* QR */
+.app .qr-box {
+  width: 100%; max-width: 260px; aspect-ratio: 1; margin: 0 auto;
+  display: grid; place-items: center;
+  background: #fff; border: 2.5px dashed var(--pink); border-radius: 18px;
+}
+.app .qr-box.small { max-width: 130px; margin-bottom: 6px; }
+.app .qr-box img { width: 100%; height: 100%; object-fit: contain; border-radius: 16px; }
+.app .qr-placeholder { font-weight: 700; color: var(--mut); font-size: .9rem; }
+.app .qr-card { text-align: center; }
+
+/* หน้ารายละเอียด */
+.app .back-link {
+  display: inline-flex; align-items: center; height: 40px; padding: 0 18px; margin: 4px 0 6px;
+  font-weight: 600; color: var(--pink-d); text-decoration: none;
+  background: #fff; border: 2px solid var(--pink); border-radius: 999px;
+}
+.app .page-title { margin: 6px 0 18px; font-size: 1.4rem; color: var(--pink-d); text-align: center; }
+.app a.next-page { width: fit-content; text-decoration: none; }
+
+@media (max-width: 380px) {
+  .app .tile-grid { gap: 10px; }
+  .app .tile-label { font-size: .95rem; }
+  .app .account-number { font-size: 1.25rem; }
+  .app .copy-btn { min-width: 84px; padding: 0 12px; }
+}
+
+/* หัวเว็บ: แท็กไลน์ */
+.hero h1.tagline {
+  display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: baseline;
+  column-gap: 8px; row-gap: 0; max-width: 100%;
+  padding: 8px 24px; font-size: 1.2rem; line-height: 1.5;
+}
+.hero .tagline-lead { color: var(--pink-d); }
+.hero .tagline-list { color: var(--blue-d); white-space: nowrap; }
+@media (max-width: 480px) {
+  .hero h1.tagline { font-size: 1rem; padding: 6px 16px; border-radius: 22px; }
+}
+@media (max-width: 340px) {
+  .hero .tagline-list { white-space: normal; }
+}
+
+/* QR จริง */
+.app .qr-box.has-img {
+  aspect-ratio: auto; max-width: 320px; border: none; background: none;
+  border-radius: 18px; overflow: hidden; box-shadow: 0 4px 14px rgba(15, 60, 100, .14);
+}
+.app .qr-box.has-img.small { max-width: 120px; border-radius: 12px; }
+.app .qr-box.has-img img { display: block; height: auto; border-radius: 0; }
+.app .qr-hint { margin: 10px 0 0; font-size: .85rem; color: var(--mut); line-height: 1.5; }
+/* รูป QR ตัดขอบมนมาแล้ว (PNG โปร่งใส) ไม่ต้องตัดซ้ำ */
+.app .qr-box.has-img { overflow: visible; box-shadow: none; border-radius: 0; }
+.app .qr-box.has-img img { filter: drop-shadow(0 4px 10px rgba(15, 60, 100, .16)); }
+
+/* ปุ่มบันทึก QR */
+.app .save-qr-btn {
+  display: block; margin: 16px auto 0; height: 48px; padding: 0 26px;
+  font: inherit; font-size: 1rem; font-weight: 700; cursor: pointer;
+  color: #fff; background: var(--pink);
+  border: 3px solid #fff; border-radius: 999px;
+  box-shadow: 0 0 0 2.5px var(--pink), 0 4px 0 var(--pink-d);
+  transition: transform .08s;
+}
+.app .save-qr-btn:active { transform: translateY(2px); }
+.app .save-qr-btn:disabled { opacity: .7; cursor: progress; }
+.app .save-qr-btn.done { background: #4cbf74; box-shadow: 0 0 0 2.5px #4cbf74, 0 4px 0 #2f9a55; }
